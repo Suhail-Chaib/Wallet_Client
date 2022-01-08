@@ -1,0 +1,63 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Crypto Wallet
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="center">
+
+  <ion-card *ngFor="let data of response">
+    <ion-card-content >
+      <div >
+        Amount: {{data.amount}}
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <form [formGroup]="signForm" (ngSubmit)="submitSign()" novalidate>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Ethereum amount</ion-label>
+      <ion-input formControlName="text2" type="number"></ion-input>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="submitted && formControls.text2.errors?.required">
+      Text is required.
+    </span>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Recipient address</ion-label>
+      <ion-input formControlName="key2" type="text"></ion-input>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="submitted && formControls.key2.errors?.required">
+      PublicKey is required.
+    </span>
+
+    <ion-row>
+      <ion-col class="center">
+        <ion-button type="submit" expand="block">Send</ion-button>       
+      </ion-col>
+    </ion-row>
+
+  </form>
+
+  <ion-row>
+    <ion-col class="center">
+      <ion-button type="submit" color="danger" (click)="refresh()" expand="block">Refresh</ion-button>       
+    </ion-col>
+  </ion-row>
+
+  <ion-card *ngFor="let data of response2">
+    <ion-card-content >
+      <div>Transacciones Recibida</div>
+      <div >
+        Amount: {{data.data}} eth
+      </div>
+    </ion-card-content>
+
+  </ion-card>
+
+</ion-content>
+
