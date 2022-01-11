@@ -12,7 +12,7 @@
   <ion-card *ngFor="let data of response">
     <ion-card-content >
       <div >
-        Amount: {{data.amount}}
+        Amount: {{data.amount}} eth
       </div>
     </ion-card-content>
   </ion-card>
@@ -52,6 +52,16 @@
   <ion-card *ngFor="let data of response2">
     <ion-card-content >
       <div>Transacciones Recibida</div>
+      <div >
+        Amount: {{data.data}} eth
+      </div>
+    </ion-card-content>
+
+  </ion-card>
+
+  <ion-card *ngFor="let data of response3">
+    <ion-card-content >
+      <div>Transacciones Enviada</div>
       <div >
         Amount: {{data.data}} eth
       </div>

@@ -22,8 +22,9 @@ export class HomePage {
   sub = false;
   data:any;
   x:any;
-  response: String[];
+  response: Number[];
   response2: DataModel[];
+  response3: DataModel[];
   resultados: String[];
   resultado:any;
   n:any;
@@ -68,6 +69,18 @@ export class HomePage {
         }
 
       });
+
+      this.dataEncryptedService.getData3(password).subscribe((response3) => {
+        this.response3 = response3; 
+
+        for(let i =0; i<this.response3.length;i++){
+          const publicKey3 = new PublicKey(e, this.n);
+          const x = publicKey3.verify(bc.base64ToBigint(this.response3[i].data));
+          this.response3[i].data = bc.bigintToText(x);
+        }
+
+      });
+
 
       this.dataEncryptedService.getAmount(password).subscribe((response) => {
         this.response = response; 
