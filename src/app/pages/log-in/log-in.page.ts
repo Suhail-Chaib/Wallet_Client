@@ -35,20 +35,15 @@ export class LogInPage implements OnInit {
       return;
     }
 
-    const password = this.loginForm.value.password;
-    
-    localStorage.setItem('password', password);
-    //console.log(password);
+    const pass = this.loginForm.value.password;
+    let password = localStorage.getItem('password');
 
-    this.userService.loginUser(password)
-      .pipe(first())
-      .subscribe(() =>  {        
-            this.router.navigateByUrl('/home');
-            //this.router.navigateByUrl('/admin-desk/'+ this.formControls.name.value);
-          }//,
-          //error => {
-              //console.log(error);}
-          );
+    if (pass === password){
+      this.router.navigateByUrl('/home');
+    }else{
+      alert("No se puedo iniciar sesion");
+    }
+
   }
 
 }

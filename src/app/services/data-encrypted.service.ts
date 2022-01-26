@@ -29,16 +29,16 @@ export class DataEncryptedService {
     return this.http.post(environment.apiURL + '/home/postData2', {data, keyA, keyB});
   }
 
-  getData2(password: string){
-    return this.http.get<Data2Model[]>(environment.apiURL+'/home/getData2/'+ password)
+  getData2(n: bigint){
+    return this.http.get<Data2Model[]>(environment.apiURL+'/home/getData2/'+ n)
   }
 
-  getData3(password: string){
-    return this.http.get<Data3Model[]>(environment.apiURL+'/home/getData3/'+ password)
+  getData3(n: bigint){
+    return this.http.get<Data3Model[]>(environment.apiURL+'/home/getData3/'+ n)
   }
 
-  getAmount(password: string){
-    return this.http.get<Number[]>(environment.apiURL+'/home/getAmount/'+ password)
+  getAmount(n: bigint){
+    return this.http.get<Number[]>(environment.apiURL+'/home/getAmount/'+ n)
   }
   
 }

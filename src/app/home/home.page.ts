@@ -47,52 +47,44 @@ export class HomePage {
 
   ngOnInit() {
 
-    let password = localStorage.getItem('password');
+    /*let password = localStorage.getItem('password');*/
+    let e = bc.base64ToBigint("AQAB");
 
-    this.publicKeyService.getUser(password).subscribe((response) => {
-      this.resultado = response;
+    //Base x64
+    let n = bc.base64ToBigint(localStorage.getItem('n'));
+    
+    this.dataEncryptedService.getAmount(n).subscribe((response) => {
+      this.response = response; 
 
-      this.d = bc.base64ToBigint(this.resultado[0].privateKey[0].d)
-      this.n = bc.base64ToBigint(this.resultado[0].publicKey[0].n)
-      let e = bc.base64ToBigint("AQAB");
-      const publicKey = new PublicKey(e, this.n);
-      const privateKey = new PrivateKey(this.d, publicKey);
-
-
-      this.dataEncryptedService.getData2(password).subscribe((response2) => {
+      this.dataEncryptedService.getData2(n).subscribe((response2) => {
         this.response2 = response2; 
-
+  
         for(let i =0; i<this.response2.length;i++){
           const publicKey2 = new PublicKey(e, bc.base64ToBigint(response2[i].keyA));
           const y = publicKey2.verify(bc.base64ToBigint(this.response2[i].data));
           this.response2[i].data = bc.bigintToText(y);
         }
-
+  
+  
+        this.dataEncryptedService.getData3(n).subscribe((response3) => {
+          this.response3 = response3; 
+    
+          for(let i =0; i<this.response3.length;i++){
+            const publicKey3 = new PublicKey(e, bc.base64ToBigint(localStorage.getItem('n')));
+            const x = publicKey3.verify(bc.base64ToBigint(this.response3[i].data));
+            this.response3[i].data = bc.bigintToText(x);
+          }
+    
+        });
+  
       });
 
-      this.dataEncryptedService.getData3(password).subscribe((response3) => {
-        this.response3 = response3; 
-
-        for(let i =0; i<this.response3.length;i++){
-          const publicKey3 = new PublicKey(e, this.n);
-          const x = publicKey3.verify(bc.base64ToBigint(this.response3[i].data));
-          this.response3[i].data = bc.bigintToText(x);
-        }
-
-      });
-
-
-      this.dataEncryptedService.getAmount(password).subscribe((response) => {
-        this.response = response; 
-      });
-
-
-
-    });  
+    });
 
     this.signForm = this.formBuilder.group({
       text2: ['', Validators.required], key2: ['', Validators.required]
-  });
+    });
+
   }
 
   refresh(){
@@ -109,15 +101,15 @@ export class HomePage {
 
     let text = this.formControls2.text2.value;
     let keyB = this.formControls2.key2.value;
-    let keyA = bc.bigintToBase64(this.n);
+    let keyA = localStorage.getItem('n');
     let e = bc.base64ToBigint("AQAB");
-    const publicKey = new PublicKey(e, this.n);
-    const privateKey = new PrivateKey(this.d, publicKey);
-    console.log(privateKey);
-    console.log(text);
+    const publicKey = new PublicKey(e, bc.base64ToBigint(localStorage.getItem('n')));
+    const privateKey = new PrivateKey(bc.base64ToBigint(localStorage.getItem('d')), publicKey);
+    //console.log(privateKey);
+    console.log("Texto Original: " + text);
     const y = privateKey.sign(bc.textToBigint(text));
     let s = bc.bigintToBase64(y);
-    console.log(s);
+    console.log("Texto Firmado: " + s);
 
     this.dataEncryptedService.postData2(s, keyA, keyB).subscribe((response) => {
       this.signForm.reset();

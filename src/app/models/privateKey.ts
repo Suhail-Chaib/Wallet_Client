@@ -1,6 +1,6 @@
-import { PrivateKey } from "../../../../RSA-Module/types";
+import { PublicKey } from "../../../../RSA-Module/types";
 
 export interface PrivateKeyModel {
     d: string; 
-    privateKey: PrivateKey;
+    publicKey: PublicKey;
 }
